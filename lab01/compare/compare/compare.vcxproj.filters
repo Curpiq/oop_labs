@@ -22,10 +22,19 @@
   <ItemGroup>
     <Text Include="file1.txt" />
     <Text Include="file2.txt" />
+    <Text Include="empty1.txt" />
+    <Text Include="empty2.txt" />
+    <Text Include="dif1.txt" />
+    <Text Include="dif2.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="compare.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tests.bat">
+      <Filter>Исходные файлы</Filter>
+    </None>
   </ItemGroup>
 </Project>

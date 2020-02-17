@@ -14,11 +14,11 @@ REM Сравнение пустых файлов
 echo Test 1 passed 
 
 REM Сравнение файлов, отличающихся 1-ой строкой
-%MyProgram% file1.txt file2.txt
+%MyProgram% file1.txt file2.txt && goto err
 echo Test 2 passed
 
 REM Сравнение файлов, отличающихся 2-ой строкой
-%MyProgram% dif1.txt dif2.txt
+%MyProgram% dif1.txt dif2.txt && goto err
 echo Test 3 passed
 
 REM Сравнение несуществующих файлов

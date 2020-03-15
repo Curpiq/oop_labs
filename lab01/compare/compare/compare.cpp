@@ -14,6 +14,12 @@ struct Args
     string fileName2;
 };
 
+struct ComparationResults
+{
+    int num;
+    bool isEqual;
+};
+
 optional<Args> ParseArgs(int argc, char* argv[])
 {
     if (argc != 3)
@@ -27,26 +33,57 @@ optional<Args> ParseArgs(int argc, char* argv[])
     return args;
 }
 
-void CompareFiles(ifstream& file1, ifstream& file2, bool& isEqual, int& count)
+optional<ComparationResults> CompareFiles(istream& file1, istream& file2)
 {
     //Сравнение содержимого файлов
-    string str1 = " ";
-    string str2 = " ";
+    string str1;
+    string str2;
+    ComparationResults comparationResults;
+    comparationResults.isEqual = false;
+    comparationResults.num = 1;
     while (!file1.eof() && !file2.eof())
     {
         getline(file1, str1);
         getline(file2, str2);
         if (str1 != str2)
         {
-            isEqual = false;
-            break;
+            comparationResults.isEqual = false;
+            return comparationResults;
         }
-        else
-        {
-            count++;
-            isEqual = true;
-        }
+        comparationResults.num++;
+        comparationResults.isEqual = true;
     }
+    return comparationResults;
+}
+
+int Comparation(optional<Args>& args)
+{
+    //Открытие файлов 
+    ifstream file1;
+    file1.open(args->fileName1);
+    ifstream file2;
+    file2.open(args->fileName2);
+    if (!file1.is_open() || !file2.is_open())
+    {
+        cout << "Failed to open " << args->fileName1 << " and/or " << args->fileName2 << " for reading" << endl;
+        return -1;
+    }
+    auto comparationResults = CompareFiles(file1, file2);
+    if (file1.bad())
+    {
+        cout << "Failed to read data from " << args->fileName1 << endl;
+        return -1;
+    }
+    if (file2.bad())
+    {
+        cout << "Failed to read data from " << args->fileName1 << endl;
+        return -1;
+    }
+    if (file1.eof() && file2.eof() && comparationResults->isEqual == true)
+    {
+        return 0;
+    }
+    return comparationResults->num;
 }
 
 int main(int argc, char* argv[])
@@ -57,35 +94,16 @@ int main(int argc, char* argv[])
     {
         return 1;
     }
-
-    //Открытие файлов 
-    ifstream file1;
-    file1.open(args->fileName1);
-    ifstream file2;
-    file2.open(args->fileName2);
-    if (!file1.is_open() || !file2.is_open())
+    int result = Comparation(args);
+    if (result == -1)
     {
-        cout << "Failed to open " << args->fileName1 << " and/or " << args->fileName2 << " for reading" << endl;
         return 1;
     }
-    bool isEqual = false;
-    int count = 1;
-    CompareFiles(file1, file2, isEqual, count);
-    if (file1.bad())
-    {
-        cout << "Failed to read data from " << args->fileName1 << endl;
-        return 1;
-    }
-    if (file2.bad())
-    {
-        cout << "Failed to read data from " << args->fileName1 << endl;
-        return 1;
-    }
-    if (file1.eof() && file2.eof() && isEqual == true)
+    if (result == 0)
     {
         cout << "Files are equal" << endl;
         return 0;
     }
-    cout << "Files are different. Line number is " << count << endl;
+    cout << "Files are different. Line number is " << result << endl;
     return 1;
 }

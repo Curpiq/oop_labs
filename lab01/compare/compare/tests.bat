@@ -13,13 +13,13 @@ REM Сравнение пустых файлов
 %MyProgram% empty1.txt empty2.txt || goto err
 echo Test 1 passed 
 
-REM Сравнение файлов, отличающихся 1-ой строкой
+REM Сравнение разных файлов
 %MyProgram% file1.txt file2.txt && goto err
 echo Test 2 passed
 
-REM Сравнение файлов, отличающихся 2-ой строкой
-%MyProgram% dif1.txt dif2.txt && goto err
-echo Test 3 passed
+REM Сравнение одинаковых файлов
+%MyProgram% equal1.txt equal2.txt || goto err
+echo Test 3 passed 
 
 REM Сравнение несуществующих файлов
 %MyProgram% text1.txt text2.txt && goto err
@@ -28,18 +28,14 @@ echo Test 4 passed
 REM Сравнение несуществующего файла с существующим
 %MyProgram% text1.txt file2.txt && goto err
 echo Test 5 passed
-%MyProgram% file1.txt text2.txt && goto err
-echo Test 6 passed
 
 REM Запуск с недостаточным количеством параметров командной строки
 %MyProgram% file1.txt && goto err
-echo Test 7 passed
-%MyProgram% && goto err
-echo Test 8 passed
+echo Test 6 passed
 
 REM Запуск с лишним количеством параметров командной строки
 %MyProgram% file1.txt file2.txt empty1.txt && goto err
-echo Test 9 passed
+echo Test 7 passed
 
 REM В случае успешного прохождения всех тестов
 echo All tests passed successfuly

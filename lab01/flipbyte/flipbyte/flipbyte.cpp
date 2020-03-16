@@ -12,7 +12,7 @@ bool ParseArgs(int argc, char* argv[], unsigned int& inputByte)
         cout << "Invalid arguments count\n" << "Usage: flipbyte.exe <decimal number>" << endl;
         return false;
     }
-    unsigned int num;
+    int num;
     try
     {
         num = stoi(argv[1]);
@@ -33,7 +33,7 @@ bool ParseArgs(int argc, char* argv[], unsigned int& inputByte)
         cout << "Invalid argument. Range of numbers: 0 - 255" << endl;
         return false;
     }
-    inputByte = num;
+    inputByte = static_cast<unsigned int>(num);
     return true;
 }
 

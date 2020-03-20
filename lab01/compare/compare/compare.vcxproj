@@ -166,10 +166,10 @@
     <ClCompile Include="compare.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="dif1.txt" />
+    <Text Include="dif2.txt" />
     <Text Include="empty1.txt" />
     <Text Include="empty2.txt" />
-    <Text Include="equal1.txt" />
-    <Text Include="equal2.txt" />
     <Text Include="file1.txt" />
     <Text Include="file2.txt" />
   </ItemGroup>

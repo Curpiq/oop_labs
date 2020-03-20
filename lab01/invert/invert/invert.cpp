@@ -28,6 +28,7 @@ optional<Args> ParseArgs(int argc, char* argv[])
 
 bool ReadMatrix(optional<Args>& args, double inputMatrix[maxSize][maxSize])
 {
+    string str;
     ifstream file;
     file.open(args->fileName);
     if (!file.is_open())
@@ -35,7 +36,11 @@ bool ReadMatrix(optional<Args>& args, double inputMatrix[maxSize][maxSize])
         cout << "Failed to open " << args->fileName << " for reading" << endl;
         return false;
     }
-    string str;
+    if (file.bad())
+    {
+        cout << "Failed to read data from " << args->fileName << endl;
+        return false;
+    }
     bool correct = true;
     int column = 0;
     int row = 0;
@@ -43,6 +48,7 @@ bool ReadMatrix(optional<Args>& args, double inputMatrix[maxSize][maxSize])
     {
         if (row == maxSize)
         {
+            cout << "false1" << endl;
             correct = false;
             break;
         }
@@ -53,6 +59,7 @@ bool ReadMatrix(optional<Args>& args, double inputMatrix[maxSize][maxSize])
         }
         if (column != maxSize)
         {
+            cout << "false2" << endl;
             correct = false;
             break;
         }
@@ -61,16 +68,12 @@ bool ReadMatrix(optional<Args>& args, double inputMatrix[maxSize][maxSize])
     }
     if (row < maxSize)
     {
+        cout << row << endl;
         correct = false;
     }
     if (!correct)
     {
         cout << "Input must be a 3x3 dimensional matrix of numbers" << endl;
-        return false;
-    }
-    if (file.bad())
-    {
-        cout << "Failed to read data from " << args->fileName << endl;
         return false;
     }
     return true;
@@ -150,7 +153,7 @@ int main(int argc, char* argv[])
     }
     if (!Invert(inputMatrix))
     {
-        cout << "Обратной матрицы не существует" << endl;
+        cout << "The inverse matrix doesn't exist" << endl;
         return 1;
     }
     for (int i = 0; i < maxSize; i++)

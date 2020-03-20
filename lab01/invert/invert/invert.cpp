@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <iomanip>  
 using namespace std;
 
 const int maxSize = 3;
@@ -137,6 +138,22 @@ bool Invert(double matrix[maxSize][maxSize])
     return true;
 }
 
+void PrintMatrix(double matrix[maxSize][maxSize])
+{
+    for (int i = 0; i < maxSize; i++)
+    {
+        for (int j = 0; j < maxSize; j++)
+        {
+            if (matrix[i][j] == -0)
+            {
+                matrix[i][j] = 0;
+            }
+            cout << fixed << setprecision(3) << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -156,19 +173,7 @@ int main(int argc, char* argv[])
         cout << "The inverse matrix doesn't exist" << endl;
         return 1;
     }
-    for (int i = 0; i < maxSize; i++)
-    {
-        for (int j = 0; j < maxSize; j++)
-        {
-            if (inputMatrix[i][j] == -0) 
-            {
-                inputMatrix[i][j] = 0;
-            }
-            cout << inputMatrix[i][j] << " ";
-
-        }
-        cout << endl;
-    }
+    PrintMatrix(inputMatrix);
     return 0;
 
 }

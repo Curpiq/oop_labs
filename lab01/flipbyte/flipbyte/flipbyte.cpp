@@ -17,14 +17,9 @@ bool ParseArgs(int argc, char* argv[], unsigned int& inputByte)
     {
         num = stoi(argv[1]);
     }
-    catch (const invalid_argument & err)
+    catch (const exception& err)
     {
-        cout << err.what() << "\n";
-        return false;
-    }
-    catch (const out_of_range & err)
-    {
-        cout << err.what() << "\n";
+        cout << err.what() << endl;
         return false;
     }
 

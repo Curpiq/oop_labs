@@ -14,6 +14,17 @@ struct Args
     string fileName2;
 };
 
+struct Comparing
+{
+    int lineNumber;
+    bool isEqual;
+};
+
+struct ComparisonResult
+{
+    int result = 0;
+};
+
 optional<Args> ParseArgs(int argc, char* argv[])
 {
     if (argc != 3)
@@ -27,37 +38,31 @@ optional<Args> ParseArgs(int argc, char* argv[])
     return args;
 }
 
-void CompareFiles(ifstream& file1, ifstream& file2, bool& isEqual, int& count)
+optional<Comparing> CompareFiles(istream& file1, istream& file2)
 {
     //Сравнение содержимого файлов
-    string str1 = " ";
-    string str2 = " ";
+    string str1;
+    string str2;
+    Comparing comparing;
+    comparing.isEqual = false;
+    comparing.lineNumber = 1;
     while (!file1.eof() && !file2.eof())
     {
         getline(file1, str1);
         getline(file2, str2);
         if (str1 != str2)
         {
-            isEqual = false;
-            break;
+            comparing.isEqual = false;
+            return comparing;
         }
-        else
-        {
-            count++;
-            isEqual = true;
-        }
+        comparing.lineNumber++;
+        comparing.isEqual = true;
     }
+    return comparing;
 }
 
-int main(int argc, char* argv[])
+optional<ComparisonResult> Compare(optional<Args>& args)
 {
-    auto args = ParseArgs(argc, argv);
-    //Проверка правильности параметров командной строки
-    if (!args)
-    {
-        return 1;
-    }
-
     //Открытие файлов 
     ifstream file1;
     file1.open(args->fileName1);
@@ -66,26 +71,42 @@ int main(int argc, char* argv[])
     if (!file1.is_open() || !file2.is_open())
     {
         cout << "Failed to open " << args->fileName1 << " and/or " << args->fileName2 << " for reading" << endl;
-        return 1;
-    }
-    bool isEqual = false;
-    int count = 1;
-    CompareFiles(file1, file2, isEqual, count);
-    if (file1.bad())
-    {
-        cout << "Failed to read data from " << args->fileName1 << endl;
-        return 1;
+        return nullopt;
     }
     if (file2.bad())
     {
         cout << "Failed to read data from " << args->fileName1 << endl;
+        return nullopt;
+    }
+    ComparisonResult comparisonResult;
+    auto comparing = CompareFiles(file1, file2);
+    if (file1.eof() && file2.eof() && comparing->isEqual == true)
+    {
+
+        return comparisonResult;
+    }
+    comparisonResult.result = comparing->lineNumber;
+    return comparisonResult;
+}
+
+int main(int argc, char* argv[])
+{
+    //Проверка правильности параметров командной строки
+    auto args = ParseArgs(argc, argv);
+    if (!args)
+    {
         return 1;
     }
-    if (file1.eof() && file2.eof() && isEqual == true)
+    auto comparisonResult = Compare(args);
+    if (!comparisonResult)
+    {
+        return 1;
+    }
+    if (comparisonResult->result == 0)
     {
         cout << "Files are equal" << endl;
         return 0;
     }
-    cout << "Files are different. Line number is " << count << endl;
+    cout << "Files are different. Line number is " << comparisonResult->result << endl;
     return 1;
 }

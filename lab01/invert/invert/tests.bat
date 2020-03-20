@@ -25,6 +25,10 @@ REM Матрица, для которой нельзя найти обратну
 %MyProgram% NonInvertMatrix.txt && goto err
 echo Test 4 passed
 
+REM Корректная матрица
+%MyProgram% Matrix.txt || goto err
+echo Test 5 passed
+
 REM Тесты проши успешно
 echo All tests passed successfuly
 exit /B 0

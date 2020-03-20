@@ -45,7 +45,7 @@ optional<Comparing> CompareFiles(istream& file1, istream& file2)
     string str2;
     Comparing comparing;
     comparing.isEqual = false;
-    comparing.lineNumber = 1;
+    comparing.lineNumber = 0;
     while (!file1.eof() && !file2.eof())
     {
         getline(file1, str1);

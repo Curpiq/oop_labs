@@ -27,7 +27,7 @@ optional<Args> ParseArgs(int argc, char* argv[])
 {
     if (argc != 2)
     {
-        cout << "Invalid arguments count\n" << "Usage: compare.exe <file1>" << endl;
+        cout << "Invalid arguments count\n" << "Usage: invert.exe <matrix file1>" << endl;
         return nullopt;
     }
     Args args;

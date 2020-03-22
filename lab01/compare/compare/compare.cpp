@@ -73,9 +73,9 @@ optional<ComparisonResult> Compare(optional<Args>& args)
         cout << "Failed to open " << args->fileName1 << " and/or " << args->fileName2 << " for reading" << endl;
         return nullopt;
     }
-    if (file2.bad())
+    if (file1.bad() || file2.bad())
     {
-        cout << "Failed to read data from " << args->fileName1 << endl;
+        cout << "Failed to read data from " << args->fileName1 << "and/or" << args->fileName2 << endl;
         return nullopt;
     }
     ComparisonResult comparisonResult;

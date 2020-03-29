@@ -129,6 +129,19 @@ Matrix3x3 GetAdjMatrix(const Matrix3x3& matrix)
     return adjMatrix;
 }
 
+Matrix3x3 DivisionMatrixByDet(double det, const Matrix3x3& matrix)
+{
+    Matrix3x3 newMatrix;
+    for (int i = 0; i < MAX_SIZE; i++)
+    {
+        for (int j = 0; j < MAX_SIZE; j++)
+        {
+            newMatrix[i][j] = matrix[i][j] / det;
+        }
+    }
+    return newMatrix;
+}
+
 bool Invert(const Matrix3x3& matrix, Matrix3x3& invertMatrix)
 {
     double det = GetDeterminant(matrix);
@@ -138,13 +151,7 @@ bool Invert(const Matrix3x3& matrix, Matrix3x3& invertMatrix)
     }
     Matrix3x3 transpMatrix = TransposeMatrix(matrix);
     Matrix3x3 adjMatrix = GetAdjMatrix(transpMatrix);
-    for (int i = 0; i < MAX_SIZE; i++)
-    {
-        for (int j = 0; j < MAX_SIZE; j++)
-        {
-            invertMatrix[i][j] = adjMatrix[i][j] / det;
-        }
-    }
+    invertMatrix = DivisionMatrixByDet(det, adjMatrix);
     return true;
 }
 

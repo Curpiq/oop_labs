@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-bool ParseArgs(int argc, char* argv[], unsigned int& inputByte)
+bool ParseArgs(int argc, char* argv[], unsigned char& inputByte)
 {
     if (argc != 2)
     {
@@ -32,9 +32,9 @@ bool ParseArgs(int argc, char* argv[], unsigned int& inputByte)
     return true;
 }
 
-unsigned int FlipByte(unsigned int number)
+unsigned char FlipByte(unsigned char number)
 {
-    unsigned int revNum = 0;
+    unsigned char revNum = 0;
     for (int i = 0; i < 8; i++) {
         revNum <<= 1;
         revNum |= number & 1;
@@ -45,12 +45,12 @@ unsigned int FlipByte(unsigned int number)
 
 int main(int argc, char* argv[])
 {
-    unsigned int inputByte;
+    unsigned char inputByte;
     if (!ParseArgs(argc, argv, inputByte))
     {
         cout << "Input must be a decimal number in the byte range" << endl;
         return 1;
     }
-    cout << FlipByte(inputByte) << endl;
+    cout << static_cast<int>(FlipByte(inputByte)) << endl;
     return 0;
 }

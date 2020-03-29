@@ -20,9 +20,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="matrix.txt" />
-    <Text Include="InvalidMatrix.txt" />
     <Text Include="NonInvertMatrix.txt" />
+    <Text Include="Matrix.txt" />
+    <Text Include="InvertMatrix.txt" />
+    <Text Include="MatrixWithLetters.txt" />
+    <Text Include="Matrix3x2.txt" />
+    <Text Include="Matrix2x3.txt" />
+    <Text Include="Matrix3x4.txt" />
+    <Text Include="Matrix4x3.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tests.bat">

@@ -9,18 +9,12 @@
 #include <iomanip> 
 #include <array>
 using namespace std;
-
-const int maxSize = 3;
+const int MAX_SIZE = 3;
+typedef array<array<double, MAX_SIZE>, MAX_SIZE> Matrix3x3;
 
 struct Args
 {
-    string fileName;
-};
-
-struct Matrix3x3
-{
-    array<array<double, maxSize>, maxSize> matrix;
-    explicit Matrix3x3() noexcept : matrix{} {}
+    string MatrixFile;
 };
 
 optional<Args> ParseArgs(int argc, char* argv[])
@@ -31,140 +25,140 @@ optional<Args> ParseArgs(int argc, char* argv[])
         return nullopt;
     }
     Args args;
-    args.fileName = argv[1];
+    args.MatrixFile = argv[1];
     return args;
 }
 
-optional<Matrix3x3> ReadMatrix(optional<Args>& args)
+bool ReadMatrix(const optional<Args>& args, Matrix3x3& matrix)
 {
     string str;
     ifstream file;
-    file.open(args->fileName);
+    file.open(args->MatrixFile);
     if (!file.is_open())
     {
-        cout << "Failed to open " << args->fileName << " for reading" << endl;
-        return nullopt;
+        cout << "Failed to open " << args->MatrixFile << " for reading" << endl;
+        return false;
+    }
+    bool isCorrectMatrix = true;
+    int row = 0;
+    while (!file.eof() && isCorrectMatrix)
+    {
+        if (row == MAX_SIZE)
+        {
+            isCorrectMatrix = false;
+            break;
+        }
+        getline(file, str);
+        istringstream line(str);
+        int column = 0;
+        while (!line.eof())
+        {
+            if (column == MAX_SIZE)
+            {
+                isCorrectMatrix = false;
+                break;
+            }
+            line >> matrix[row][column];
+            column++;
+        }
+        if (column < MAX_SIZE)
+        {
+            isCorrectMatrix = false;
+            break;
+        }
+        row++;
+    }
+    if ((row < MAX_SIZE) || (!isCorrectMatrix))
+    {
+        cout << "Input must be a 3x3 dimensional matrix of numbers" << endl;
+        return false;
     }
     if (file.bad())
     {
-        cout << "Failed to read data from " << args->fileName << endl;
-        return nullopt;
+        cout << "Failed to read data from " << args->MatrixFile << endl;
+        return false;
     }
-    Matrix3x3 inputMatrix;
-    bool correct = true;
-    int column = 0;
-    int row = 0;
-    while ((getline(file, str)) && (correct == true))
-    {
-        if (row == maxSize)
-        {
-            correct = false;
-            break;
-        }
-        istringstream line(str);
-        double x;
-        while (line >> x)
-        {
-            inputMatrix.matrix[row][column] = x;
-            column++;
-        }
-        if (column != maxSize)
-        {
-            correct = false;
-            break;
-        }
-        column = 0;
-        row++;
-    }
-    if (row < maxSize)
-    {
-        correct = false;
-    }
-    if (!correct)
-    {
-        cout << "Input must be a 3x3 dimensional matrix of numbers" << endl;
-        return nullopt;
-    }
-    return inputMatrix;
+    return true;
 }
 
-double GetDeterminant(array<array<double, 3>, 3> matrix)
+double GetDeterminant(const Matrix3x3& matrix)
 {
     double det = matrix[0][0] * matrix[1][1] * matrix[2][2] +
         matrix[0][1] * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0] * matrix[2][1] -
         matrix[0][2] * matrix[1][1] * matrix[2][0] - matrix[0][0] * matrix[1][2] * matrix[2][1] -
         matrix[0][1] * matrix[1][0] * matrix[2][2];
-    cout << det << endl;
     return det;
 }
 
-optional<Matrix3x3> TransposeMatrix(array<array<double, 3>, 3> matrix)
+Matrix3x3 TransposeMatrix(const Matrix3x3& matrix)
 {
     Matrix3x3 transpMatrix;
-    for (int row = 0; row < maxSize - 1; row++)
+    transpMatrix = matrix;
+    for (int row = 0; row < MAX_SIZE - 1; row++)
     {
-        for (int col = row + 1; col < maxSize; col++)
+        for (int col = row + 1; col < MAX_SIZE; col++)
         {
-            swap(matrix[col][row], matrix[row][col]);
-            
+            swap(transpMatrix[col][row], transpMatrix[row][col]);   
         }
     }
-    transpMatrix.matrix = matrix;
     return transpMatrix;
 }
 
-optional<Matrix3x3> GetAdjMatrix(array<array<double, 3>, 3> matrix)
+Matrix3x3 GetAdjMatrix(const Matrix3x3& matrix)
 {
     Matrix3x3 adjMatrix;
-    adjMatrix.matrix[0][0] = matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1];
-    adjMatrix.matrix[0][1] = (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) * (-1);
-    adjMatrix.matrix[0][2] = matrix[1][0] * matrix[2][1] - matrix[2][0] * matrix[1][1];
-    adjMatrix.matrix[1][0] = (matrix[0][1] * matrix[2][2] - matrix[0][2] * matrix[2][1]) * (-1);
-    adjMatrix.matrix[1][1] = matrix[0][0] * matrix[2][2] - matrix[0][2] * matrix[2][0];
-    adjMatrix.matrix[1][2] = (matrix[0][0] * matrix[2][1] - matrix[0][1] * matrix[2][0]) * (-1);
-    adjMatrix.matrix[2][0] = matrix[0][1] * matrix[1][2] - matrix[0][2] * matrix[1][1];
-    adjMatrix.matrix[2][1] = (matrix[0][0] * matrix[1][2] - matrix[0][2] * matrix[1][0]) * (-1);
-    adjMatrix.matrix[2][2] = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    adjMatrix[0][0] = matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1];
+    adjMatrix[0][1] = (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) * (-1);
+    adjMatrix[0][2] = matrix[1][0] * matrix[2][1] - matrix[2][0] * matrix[1][1];
+    adjMatrix[1][0] = (matrix[0][1] * matrix[2][2] - matrix[0][2] * matrix[2][1]) * (-1);
+    adjMatrix[1][1] = matrix[0][0] * matrix[2][2] - matrix[0][2] * matrix[2][0];
+    adjMatrix[1][2] = (matrix[0][0] * matrix[2][1] - matrix[0][1] * matrix[2][0]) * (-1);
+    adjMatrix[2][0] = matrix[0][1] * matrix[1][2] - matrix[0][2] * matrix[1][1];
+    adjMatrix[2][1] = (matrix[0][0] * matrix[1][2] - matrix[0][2] * matrix[1][0]) * (-1);
+    adjMatrix[2][2] = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    for (int i = 0; i < MAX_SIZE; i++)
+    {
+        for (int j = 0; j < MAX_SIZE; j++)
+        {
+            if (adjMatrix[i][j] == -0)
+            {
+                adjMatrix[i][j] = 0;
+            }
+        }
+    }
     return adjMatrix;
 }
 
-optional<Matrix3x3> GetInvertMatrix(array<array<double, 3>, 3> adjMatrix, double det)
+bool Invert(const Matrix3x3& matrix, Matrix3x3& invertMatrix)
 {
-    Matrix3x3 invertMatrix{};
-    for (int i = 0; i < maxSize; i++)
-    {
-        for (int j = 0; j < maxSize; j++)
-        {
-            invertMatrix.matrix[i][j] = adjMatrix[i][j]/det;
-        }
-    }
-    return invertMatrix;
-}
-
-optional<Matrix3x3> Invert(optional<Matrix3x3> matrix)
-{
-    double det = GetDeterminant(matrix->matrix);
+    double det = GetDeterminant(matrix);
     if (det == 0)
     {
-        return nullopt;
+        return false;
     }
-    auto transpMatrix = TransposeMatrix(matrix->matrix);
-    auto adjMatrix = GetAdjMatrix(transpMatrix->matrix);
-    auto invertMatrix = GetInvertMatrix(adjMatrix->matrix, det);
-    return invertMatrix;
+    Matrix3x3 transpMatrix = TransposeMatrix(matrix);
+    Matrix3x3 adjMatrix = GetAdjMatrix(transpMatrix);
+    for (int i = 0; i < MAX_SIZE; i++)
+    {
+        for (int j = 0; j < MAX_SIZE; j++)
+        {
+            invertMatrix[i][j] = adjMatrix[i][j] / det;
+        }
+    }
+    return true;
 }
 
-void PrintMatrix(array<array<double, 3>, 3> matrix)
+void PrintMatrix(const Matrix3x3& matrix)
 {
-    for (int i = 0; i < maxSize; i++)
+    for (int i = 0; i < MAX_SIZE; i++)
     {
-        for (int j = 0; j < maxSize; j++)
+        for (int j = 0; j < MAX_SIZE; j++)
         {
-            if (matrix[i][j] == -0)
+            cout << fixed << setprecision(3) << matrix[i][j];
+            if (j < 2)
             {
-                matrix[i][j] = 0;
+                cout << " ";
             }
-            cout << fixed << setprecision(3) << matrix[i][j] << " ";
         }
         cout << endl;
     }
@@ -179,20 +173,18 @@ int main(int argc, char* argv[])
     {
         return 1;
     }
-
-    auto inputMatrix = ReadMatrix(args);
-    if (!inputMatrix)
+    Matrix3x3 inputMatrix;
+    if (!ReadMatrix(args, inputMatrix))
     {
         return 1;
     }
-
-    auto invertMatrix = Invert(inputMatrix);
-    if (!invertMatrix)
+    Matrix3x3 invertMatrix;
+    if (!Invert(inputMatrix, invertMatrix))
     {
         cout << "The inverse matrix doesn't exist" << endl;
         return 1;
     }
-    PrintMatrix(invertMatrix->matrix);
+    PrintMatrix(invertMatrix);
     return 0;
 
 }

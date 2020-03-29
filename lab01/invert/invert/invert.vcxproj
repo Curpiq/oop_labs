@@ -166,8 +166,13 @@
     <ClCompile Include="invert.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="InvalidMatrix.txt" />
-    <Text Include="matrix.txt" />
+    <Text Include="Matrix2x3.txt" />
+    <Text Include="Matrix3x2.txt" />
+    <Text Include="InvertMatrix.txt" />
+    <Text Include="Matrix.txt" />
+    <Text Include="Matrix3x4.txt" />
+    <Text Include="Matrix4x3.txt" />
+    <Text Include="MatrixWithLetters.txt" />
     <Text Include="NonInvertMatrix.txt" />
   </ItemGroup>
   <ItemGroup>

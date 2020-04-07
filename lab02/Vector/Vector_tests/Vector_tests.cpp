@@ -16,6 +16,22 @@ TEST_CASE("Make empty vector from empty vector")
 	CHECK(emptyVector.empty());
 }
 
+TEST_CASE("Make the same vector from vector that min. element are 0")
+{
+	vector<double> numbers = { 0, 1, 5 };
+	vector<double> expected = numbers;
+	ProcessVector(numbers);
+	CHECK(ArraysAreEqual(numbers, expected));
+}
+
+TEST_CASE("Make the same vector from vector that min. element and max. element are 0")
+{
+	vector<double> numbers = { 0 };
+	vector<double> expected = numbers;
+	ProcessVector(numbers);
+	CHECK(ArraysAreEqual(numbers, expected));
+}
+
 TEST_CASE("Make a vector, each element of which is multiplied by maximum element and divided by minimum element of the original vector")
 {
 	vector<double> numbers = { 4, 3, 2, 10 };

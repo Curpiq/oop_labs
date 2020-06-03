@@ -23,7 +23,7 @@ const vector<EntitySymbolPair> pairOfEntitiyAndSymbol =
 	{ "&amp;", "&" }
 };
 
-unsigned int FindEntityNumberToDecode(int marker, const string& inputString, int entityNumber)
+int FindEntityNumberToDecode(int marker, const string& inputString, int entityNumber)
 {
 	string str;
 	for (int i = marker; ((i < inputString.length()) && (i < marker + MAX_LENGTH_OF_HTML_ENTITY)); i++)
@@ -48,7 +48,6 @@ void DecodeEntity(int& entityNumber, int& marker, string& decodedString)
 	decodedString += pairOfEntitiyAndSymbol[entityNumber].symbol;
 	marker += pairOfEntitiyAndSymbol[entityNumber].htmlEntity.length();
 	entityNumber = -1;
-
 }
 
 string StringDecoder(const string& inputString)

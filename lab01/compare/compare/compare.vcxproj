@@ -174,9 +174,6 @@
     <Text Include="file2.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="compare.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="tests.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

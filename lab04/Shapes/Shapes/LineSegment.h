@@ -10,8 +10,8 @@ class CLineSegment : public IShape
 		double GetPerimeter()const override;
 		std::string ToString()const override;
 		uint32_t GetOutlineColor()const override;
-		/*CPoint GetStartPoint()const;
-		CPoint GetEndPoint()const;*/
+		CPoint GetStartPoint()const;
+		CPoint GetEndPoint()const;
 	private:
 		uint32_t m_outlineColor;
 		CPoint m_startPoint, m_endPoint;

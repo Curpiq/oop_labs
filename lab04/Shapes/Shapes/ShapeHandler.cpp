@@ -88,6 +88,7 @@ bool AreCorrectParams(const vector<string>& params, size_t colorCheck)
 			}
 		}
 	}
+	return true;
 }
 
 void CShapeHandler::PrintShapeWithMaxArea()const

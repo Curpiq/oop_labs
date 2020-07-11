@@ -41,3 +41,25 @@ uint32_t CRectangle::GetFillColor()const
 	return m_fillColor;
 }
 
+CPoint CRectangle::GetLeftTop()const
+{
+	return m_topLeftCorner;
+}
+
+CPoint CRectangle::GetRightBottom()const
+{
+	CPoint rightBottomCorner;
+	rightBottomCorner.x = m_topLeftCorner.x + m_width;
+	rightBottomCorner.y = m_topLeftCorner.y - m_height;
+	return rightBottomCorner;
+}
+
+double CRectangle::GetWidth()const
+{
+	return m_width;
+}
+
+double CRectangle::GetHeight()const
+{
+	return m_height;
+}

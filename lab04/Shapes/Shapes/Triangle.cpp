@@ -51,3 +51,18 @@ uint32_t CTriangle::GetFillColor()const
 {
 	return m_fillColor;
 }
+
+CPoint CTriangle::GetVertex1()const
+{
+	return m_vertex1;
+}
+
+CPoint CTriangle::GetVertex2()const
+{
+	return m_vertex2;
+}
+
+CPoint CTriangle::GetVertex3()const
+{
+	return m_vertex3;
+}

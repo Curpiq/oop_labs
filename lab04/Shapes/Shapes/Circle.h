@@ -11,6 +11,8 @@ public:
 	std::string ToString()const override;
 	uint32_t GetOutlineColor()const override;
 	uint32_t GetFillColor()const override;
+	CPoint GetCenter()const;
+	double GetRadius()const;
 private:
 	CPoint m_center;
 	double m_radius;

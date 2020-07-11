@@ -11,6 +11,10 @@ public:
 	std::string ToString()const override;
 	uint32_t GetOutlineColor()const override;
 	uint32_t GetFillColor()const override;
+	CPoint GetLeftTop()const;
+	CPoint GetRightBottom()const;
+	double GetWidth()const;
+	double GetHeight()const;
 private:
 	double m_width, m_height;
 	CPoint m_topLeftCorner;

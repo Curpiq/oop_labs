@@ -33,13 +33,14 @@ uint32_t CLineSegment::GetOutlineColor()const
 	return m_outlineColor;
 }
 
-//CPoint CLineSegment::GetStartPoint()const
-//{
-//	m_startPoint;
-//}
-//
-//CPoint CLineSegment::GetEndPoint()const
-//{
-//	return m_endPoint;
-//}
+CPoint CLineSegment::GetStartPoint()const
+{
+	return m_startPoint;
+}
+
+CPoint CLineSegment::GetEndPoint()const
+{
+	return m_endPoint;
+}
+
 

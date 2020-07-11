@@ -25,7 +25,7 @@ std::string CCircle::ToString()const
 {
 	std::ostringstream ss;
 	ss << "Center: " <<
-		"(" << m_center.x << "," <<m_center.y << ")\n" <<
+		"(" << m_center.x << ", " <<m_center.y << ")\n" <<
 		"Radius: " << m_radius << "\n" <<
 		"Outline color: " << std::hex << m_outlineColor << "\n" <<
 		"Fill color: " << std::hex << m_fillColor << "\n";
@@ -42,4 +42,13 @@ uint32_t CCircle::GetFillColor()const
 	return m_fillColor;
 }
 
+CPoint CCircle::GetCenter()const
+{
+	return m_center;
+}
+
+double CCircle::GetRadius()const
+{
+	return m_radius;
+}
 

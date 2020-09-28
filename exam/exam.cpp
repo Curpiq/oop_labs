@@ -98,9 +98,9 @@ CTime& CTime::operator-=(const CTime& time)
 int main()
 {
 	CTime time1(01, 15, 25);
-	cout << time1.ToString() << endl;
+	cout << time1 << endl;
 
 	CTime time2(01, 16, 25);
 
-	cout << (time1 + time2).ToString() << endl;
+	cout << time1 + time2 << endl;
 }
